@@ -35,16 +35,33 @@ bool isSubstring(string s1, string s2){ if (s1.find(s2) != string::npos) return 
 ll   ncr(ll n, ll r)        {if(r==0)return 1;fact[0]=1;for(int i=1;i<=n;i++)fact[i]=fact[i-1]*i%M;return(fact[n]*modi(fact[r])%M*modi(fact[n-r])%M)%M;}
 
 //------------------------Template Above------------------------
+const ll mxN = 1000006;
+vll minCoins(mxN, LLONG_MAX);
+
+ll rec(ll sum, vll &a){
+  if(sum==0)
+    return 0;
+  else if(sum < 0)
+    return mxN;
+  else if(minCoins[sum] == LLONG_MAX){
+    for(ll val : a)
+      minCoins[sum] = min(minCoins[sum], 1 + rec(sum-val, a));
+  }
+  return minCoins[sum];
+}
 
 int main(){
   fio
-  ll i,n,x,s=0;
-  cin>>n;
-  fo(i,n-1){
-    cin>>x;
-    s+=x;
-  }
-  cout<<n*(n+1)/2 - s;
+  ll i,n,sum;
+  cin>>n>>sum;
+  vll a(n);
+  fo(i,n)
+    cin>>a[i];
+  ll ans = rec(sum,a);
+  if(ans > sum)
+    cout << -1;
+  else
+    cout << ans;
   return 0;
 }
 
