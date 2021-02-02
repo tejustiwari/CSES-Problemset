@@ -1,4 +1,3 @@
-//tejustiwari
 #include <bits/stdc++.h>
 using namespace std;
 #define ff                  first
@@ -36,36 +35,46 @@ ll   ncr(ll n, ll r)        {if(r==0)return 1;fact[0]=1;for(int i=1;i<=n;i++)fac
 
 //----------Template Above----------
 
-ll rec(ll n, vll &dp){
-  if(n<10)
-    return 1;
-  if(dp[n]==-1){
-    dp[n]=INT_MAX;
-    for (char c : to_string(n)) {
-      dp[n] = min(dp[n], dp[n-(c-'0')]+1);
-    }
-  }
-  return dp[n];
-}
-
 void solve() {
-  ll n;
-  cin>>n;
-  vll dp(n+1,-1);
-  cout<<rec(n,dp);
+  ll i, n;
+  cin >> n;
+  if (n % 4 == 3) {
+    cout<<"YES\n";
+    cout << n/2 + 1 << '\n';
+    cout << "1 ";
+    cout << n/2+1 << ' ';
+    for(int i = 1; i < n/2; i+=2)
+      cout << i+1 <<' ';
+    for(int i = n/2 + 3; i < n; i+=2)
+      cout << i+1 <<' ';
+
+    cout << '\n' << n/2 << '\n';
+    cout << n/2+2 << ' ';
+    for(int i = 2; i < n/2; i+=2)
+      cout << i+1 <<' ';
+    for(int i = n/2 + 2; i < n; i+=2)
+      cout << i+1 <<' ';
+  }
+  else if (n % 4 == 0) {
+    cout << "YES\n";
+    cout << n/2 << '\n';
+    for(int i = 1; i <= n/2; i+=2)
+      cout << i <<' ' << n+1-i << ' ';
+    cout << '\n' << n/2 << '\n';
+    for(int i = 2; i <= n/2; i+=2)
+      cout << i <<' ' << n+1-i << ' ';
+  }
+  else
+    cout<<"NO\n";
 }
 
 //---------- Main() Below ----------
 
 int main() {
-  #ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-  #endif
   ios_base::sync_with_stdio(0);
   cin.tie(0);
-
   ll t = 1;
+  // cin >> t;
   while(t--)
     solve();
   return 0;

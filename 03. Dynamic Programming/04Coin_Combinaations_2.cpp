@@ -5,33 +5,35 @@ const ll M = 1e9 + 7;
 
 //----------Template Above----------
 
-vector<ll> ways(1e6+6, -1);
-
-ll numberOfWays (ll sum, , ll idx, vector<ll> &coins) {
-  ll i, n = coins.size();
+ll numberOfWays (ll sum, ll idx, vector<ll> &coins, ll ways[][106]) {
+  ll n = coins.size();
   if(sum == 0)
-    return 1;
-  else if(sum < 0)
+    return ways[sum][idx] = 1;
+  else if(sum < 0 || idx < 0)
     return 0;
-  if(ways[sum] == -1) {
-    ways[sum] = 0;
-    for (i = 0; i < n; i++) {
-      if (coins[i] <= sum) {
-        ways[sum] = (ways[sum]%M + numberOfWays(sum - coins[i], idx, coins)%M)%M;
-      }
+  if(ways[sum][idx] == -1) {
+    if (coins[idx] <= sum) {
+      ways[sum][idx] = (numberOfWays(sum - coins[idx], idx, coins, ways)%M + numberOfWays(sum, idx - 1, coins, ways)%M)%M;
+    }
+    else {
+      ways[sum][idx] = numberOfWays(sum, idx - 1, coins, ways)%M;
     }
   }
-  return ways[sum];
+  return ways[sum][idx];
 }
 
 void solve () {
   ll i, n, sum;
   cin >> n >> sum;
   vector<ll> coins(n);
+  // vector<vector<ll>> ways(sum+6,vector<ll>(n+6,-1));
+  ll ways[sum+6][106];
+  memset(ways, -1, sizeof(ways));
   for (i = 0; i < n; i++) {
     cin >> coins[i];
   }
-  cout << numberOfWays(sum, coins);
+  sort(coins.begin(), coins.end());
+  cout << numberOfWays(sum, n-1, coins, ways) <<'\n';
 }
 
 //---------- Main() Below ----------

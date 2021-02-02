@@ -20,8 +20,8 @@ using namespace std;
 #define debugarray(arr,n)   for(int i=0;i<n;i++) {cout<<"i="<<i<<" arr[i]="<<arr[i]<<"\n";}
 #define debugmatrix(a,n,m)  cout<<setw(5*m+8)<<"MATRIX\n\n";for(int i=0;i<n;i++){for(int j=0;j<m;j++){cout<<setw(10)<<a[i][j];}cout<<"\n";}
 #define file_io             freopen("Input_file_name.txt","r",stdin);freopen("Output_file_name.txt","w",stdout)
-typedef long long int ll;   typedef vector<int> vi; typedef vector<ll> vll;   typedef pair<int,int> pi;  typedef pair<ll,ll>   pll;
-const  ll M1 =1000000007;    const ll M = 998244353;      const double PI = 3.141592653589793;   vll primefactors, factors, fact;
+typedef long long int ll;   typedef vector<int> vi; typedef vector<ll> vll;   typedef pair<int,int>	pi;  typedef pair<ll,ll>	 pll;
+const  ll M =1000000007;    const ll M1 = 998244353;      const double PI = 3.141592653589793; vll primefactors, factors, fact;
 bool isPowerTwo(ll x)       {return(x && !(x&(x-1)));}
 ll   power(ll a, ll b)      {ll r=1;while(b){if(b&1)r=(r*a);a=(a*a);b>>=1;}return r;}
 ll   powerM(ll a,ll b)      {ll r=1;while(b){if(b&1)r=(r*a)%M;a=(a*a)%M;b>>=1;}return r;}
@@ -34,39 +34,37 @@ void getPrimeFactors(ll n)  {primefactors.clear();for(ll i=2;i*i<=n;i++){if(n%i=
 bool isSubstring(string s1, string s2){ if (s1.find(s2) != string::npos) return true; else return false; }
 ll   ncr(ll n, ll r)        {if(r==0)return 1;fact[0]=1;for(int i=1;i<=n;i++)fact[i]=fact[i-1]*i%M;return(fact[n]*modi(fact[r])%M*modi(fact[n-r])%M)%M;}
 
-//----------Template Above----------
+//------------------------Template Above------------------------
+ll moves = 0;
 
-ll rec(ll n, vll &dp){
-  if(n<10)
-    return 1;
-  if(dp[n]==-1){
-    dp[n]=INT_MAX;
-    for (char c : to_string(n)) {
-      dp[n] = min(dp[n], dp[n-(c-'0')]+1);
-    }
+void calculateMoves(ll numberOfDisks, ll src, ll dst, ll aux) {
+  if (numberOfDisks == 1)
+    ++moves;
+  else {
+    calculateMoves (numberOfDisks - 1, src, aux, dst);      // Step 1
+    ++moves;                                                 // Step 2
+    calculateMoves (numberOfDisks - 1, aux, dst, src);      // Step 3
   }
-  return dp[n];
 }
 
-void solve() {
-  ll n;
-  cin>>n;
-  vll dp(n+1,-1);
-  cout<<rec(n,dp);
+void towerOfHanoi(ll numberOfDisks, ll src, ll dst, ll aux) {
+  if (numberOfDisks == 1)
+    cout << src << ' ' << dst << '\n';
+  else {
+    towerOfHanoi (numberOfDisks - 1, src, aux, dst);      // Step 1
+    cout << src << ' ' << dst << '\n';                    // Step 2
+    towerOfHanoi (numberOfDisks - 1, aux, dst, src);      // Step 3
+  }
 }
 
-//---------- Main() Below ----------
-
-int main() {
-  #ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-  #endif
-  ios_base::sync_with_stdio(0);
-  cin.tie(0);
-
-  ll t = 1;
-  while(t--)
-    solve();
+int main(){
+  fio
+  ll numberOfDisks;
+  cin >> numberOfDisks;
+  calculateMoves(numberOfDisks, 1, 3, 2);
+  cout << moves << '\n';
+  towerOfHanoi(numberOfDisks, 1, 3, 2);
   return 0;
 }
+
+//--------------------------------------------------------------

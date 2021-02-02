@@ -1,4 +1,3 @@
-//tejustiwari
 #include <bits/stdc++.h>
 using namespace std;
 #define ff                  first
@@ -36,23 +35,28 @@ ll   ncr(ll n, ll r)        {if(r==0)return 1;fact[0]=1;for(int i=1;i<=n;i++)fac
 
 //----------Template Above----------
 
-ll rec(ll n, vll &dp){
-  if(n<10)
-    return 1;
-  if(dp[n]==-1){
-    dp[n]=INT_MAX;
-    for (char c : to_string(n)) {
-      dp[n] = min(dp[n], dp[n-(c-'0')]+1);
-    }
-  }
-  return dp[n];
-}
-
 void solve() {
   ll n;
-  cin>>n;
-  vll dp(n+1,-1);
-  cout<<rec(n,dp);
+  cin >> n;
+  vll v(n+1);
+  v[0]=0;
+  v[1]=0;
+  v[2]=6;
+  v[3]=28;
+  v[4]=96;
+  v[5]=252;
+  v[6]=550;
+  v[7]=1056;
+  v[8]=1848;
+  for (ll k = 9; k <= n; k++) {
+    ll ans = 48 + (k-4)*(40 + (k-4)*8);
+    ans /= 2;
+    ans = 4*(k-1)*(k-2);
+    v[k] = k*k*(k*k-1)/2 - ans;
+  }
+  for (ll i = 1; i <= n; i++) {
+    cout << v[i] << '\n';
+  }
 }
 
 //---------- Main() Below ----------
@@ -66,6 +70,7 @@ int main() {
   cin.tie(0);
 
   ll t = 1;
+  // cin >> t;
   while(t--)
     solve();
   return 0;
